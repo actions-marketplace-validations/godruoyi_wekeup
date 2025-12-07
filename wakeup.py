@@ -1,23 +1,35 @@
-import os
-
 from drivers import make_image_driver
 from notifications import make_notifier, Message
 from services import HydrateService
-
-DRIVER = "bing_ball_e3"
-CHANNELS = ["tg"]
-CITY = os.getenv("CITY", "重庆")
-
+from environment import Environment
 
 if __name__ == '__main__':
     service = HydrateService()
+    sentence = service.random_sentence()
+    weather = service.get_weather(Environment.get_city())
 
-    for channel in CHANNELS:
-        sentence = service.random_sentence()
-        images = make_image_driver(DRIVER).generate_images(sentence)
-        m = Message(images, service.get_weather(CITY), sentence)
+    notifiers = []
+    for channel in Environment.get_channels():
+        # initialize notifiers first to check if the configuration is correct
+        notifiers.append({"notifier": make_notifier(channel), "channel": channel})
 
-        make_notifier(channel).notify(m)
+    for d in Environment.get_drivers():
+        message = Message(weather=weather, sentence=sentence)
+        message.driver = d
+        print("generating images for driver {}, sentence: {}".format(d, sentence))
+
+        try:
+            images = make_image_driver(d).generate_images(sentence)
+            message.images = images
+        except Exception as e:
+            print("error generating images: ", e)
+            if Environment.send_error() is False:
+                print("error sending disabled")
+                continue
+            message.error = str(e)
+
+        for notifier in notifiers:
+            message.channel = notifier["channel"]
+            notifier["notifier"].notify(message)
 
     print("done")
-

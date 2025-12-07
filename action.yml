@@ -10,17 +10,83 @@ inputs:
     description: "Telegram Chat ID"
     required: false
 
-  weather_city:
-    description: "City for weather"
-    default: '重庆'
+  slack_token:
+    description: "Slack Bot Token"
     required: false
 
+  slack_chat_id:
+    description: "Slack Chat ID"
+    required: false
+
+  weather_city:
+    description: "City for weather"
+    default: 'chongqing'
+    required: false
+
+  # deprecated
   bing_auth_token:
     description: "Bing Auth Cookie (_U)"
     required: true
 
+  # deprecated
   bing_auth_token_kiev:
     description: "(optional) Bing Auth Cookie (Kiev)"
+    required: false
+
+  bing_all_cookies:
+    description: "Bing Auth Cookie (all cookies)"
+    required: false
+
+  openai_api_base:
+    description: "OpenAI API Base"
+    required: false
+
+  openai_api_type:
+    description: "OpenAI API Type"
+    required: false
+
+  openai_api_version:
+    description: "OpenAI API Version"
+    required: false
+
+  openai_api_key:
+    description: "OpenAI API Key"
+    required: false
+
+  dall_model:
+    description: "DALL-E model"
+    default: 'dall-e-3'
+    required: false
+
+  channels:
+    description: "Channels"
+    default: 'tg'
+    required: false
+
+  drivers:
+    description: "Image drivers"
+    default: 'openai'
+    required: false
+
+  send_error:
+    description: "Send error"
+    default: 'false'
+    required: false
+
+  message_format:
+    description: "Message format"
+    required: false
+
+  error_message_format:
+    description: "Error message format"
+    required: false
+
+  qianfan_ak:
+    description: "Qianfan AK"
+    required: false
+
+  qianfan_sk:
+    description: "Qianfan SK"
     required: false
 
 runs:
@@ -29,9 +95,24 @@ runs:
   env:
     BING_AUTH_TOKEN: ${{ inputs.bing_auth_token }}
     BING_AUTH_TOKEN_KIEV: ${{ inputs.bing_auth_token_kiev }}
+    BING_ALL_COOKIES: ${{ inputs.bing_all_cookies }}
     TG_TOKEN: ${{ inputs.tg_token }}
     TG_CHAT_ID: ${{ inputs.tg_chat_id }}
+    SLACK_TOKEN: ${{ inputs.slack_token }}
+    SLACK_CHAT_ID: ${{ inputs.slack_chat_id }}
     CITY: ${{ inputs.weather_city }}
+    OPENAI_API_BASE: ${{ inputs.openai_api_base }}
+    OPENAI_API_TYPE: ${{ inputs.openai_api_type }}
+    OPENAI_API_VERSION: ${{ inputs.openai_api_version }}
+    OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    DALL_MODEL: ${{ inputs.dall_model }}
+    CHANNELS: ${{ inputs.channels }}
+    DRIVERS: ${{ inputs.drivers }}
+    SEND_ERROR: ${{ inputs.send_error }}
+    MESSAGE_FORMAT: ${{ inputs.message_format }}
+    ERROR_MESSAGE_FORMAT: ${{ inputs.error_message_format }}
+    QIANFAN_AK: ${{ inputs.qianfan_ak }}
+    QIANFAN_SK: ${{ inputs.qianfan_sk }}
 
 branding:
   icon: 'package'

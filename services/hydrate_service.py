@@ -1,5 +1,5 @@
 from .gushici import random_sentence
-from .weather import get_weather
+from .weather import get_weather2
 
 
 class HydrateService:
@@ -9,4 +9,7 @@ class HydrateService:
 
     @staticmethod
     def get_weather(city: str):
-        return get_weather(city)
+        # disable fill weather info when city is not set
+        if city is None or city == "":
+            return ""
+        return get_weather2(city)
